@@ -1,0 +1,27 @@
+﻿services:
+  demo.api:
+    image: ${DOCKER_REGISTRY-}webapi
+    container_name: demo-api
+    build:
+      context: .
+      dockerfile: MyWebApp/Dockerfile
+  
+  demo.db:
+    image: postgres:latest
+    container_name: demo-db
+    environment:
+      - POSTGRES_DB=eshop
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    volumes:
+      - ./.containers/db:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+  demo.seq:
+    image: datalust/seq:latest
+    container_name: demo-seq
+    environment:
+      - ACCEPT_EULA=Y
+    ports:
+      - "5341:5341"
+      - "8081:80"
