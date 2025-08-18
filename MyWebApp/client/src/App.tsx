@@ -1,26 +1,20 @@
-import './App.css'
-import {Button} from './components/ui/button'
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from './components/ui/card'
+import { Toaster } from "sonner";
+import "./App.css";
+import { StoreProcess } from "./feature/store/storeProcess";
 
 function App() {
-    return (
-        <>
-            <Card>
-                <CardHeader>
-                    <CardTitle>Buy</CardTitle>
-                </CardHeader>
-                <CardContent>
-                    <Button className="cursor-pointer">
-                        Buy 1 corn
-                    </Button>
-                </CardContent>
-                <CardFooter>
-                    <p>Only 1 per minute</p>
-                </CardFooter>
-            </Card>
-
-        </>
-    )
+  return (
+    <>
+      <Toaster
+        toastOptions={{
+          classNames: {
+            description: "!text-red-900",
+          },
+        }}
+      />
+      <StoreProcess></StoreProcess>
+    </>
+  );
 }
 
-export default App
+export default App;
