@@ -9,18 +9,16 @@ public class Product : Entity<ProductId>
     {
     } // For EF Core
 
-    public Product(ProductId id, string name, StockQuantity stockQuantity) : base(id)
+    private Product(ProductId id, string name, StockQuantity stockQuantity) : base(id)
     {
         Name = name ?? throw new ArgumentNullException(nameof(name));
         StockQuantity = stockQuantity;
         CreatedAt = DateTime.UtcNow;
     }
 
-    // Internal constructor for EF Core reconstruction
-    internal Product(ProductId id, string name, StockQuantity stockQuantity, DateTime createdAt) : base(id)
+    private Product(ProductId id, string name, StockQuantity stockQuantity, DateTime createdAt) : 
+        this (id,name, stockQuantity)
     {
-        Name = name;
-        StockQuantity = stockQuantity;
         CreatedAt = createdAt;
     }
 
@@ -37,8 +35,7 @@ public class Product : Entity<ProductId>
     {
         return StockQuantity.Value >= amount;
     }
-
-    // Internal method for EF Core to reconstruct the entity
+    
     public static Product Reconstruct(ProductId id, string name, StockQuantity stockQuantity, DateTime createdAt)
     {
         return new Product(id, name, stockQuantity, createdAt);

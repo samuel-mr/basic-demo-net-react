@@ -4,7 +4,7 @@ namespace Domain.Core.Shared;
 
 public record MyBaseResult
 {
-    internal MyBaseResult(bool isSuccess, Error? error, params string[] texts)
+    internal MyBaseResult(bool isSuccess, Error? error)
     {
         IsSuccess = isSuccess;
         Error = error;
@@ -22,10 +22,10 @@ public record MyBaseResult
         return new MyBaseResult(true, null);
     }
 
-    public static MyBaseResult Failure(Error error, params string[] texts)
+    public static MyBaseResult Failure(Error error)
     {
         ArgumentNullException.ThrowIfNull(error);
-        return new MyBaseResult(false, error, texts);
+        return new MyBaseResult(false, error);
     }
 
     public static implicit operator MyBaseResult(Error error)

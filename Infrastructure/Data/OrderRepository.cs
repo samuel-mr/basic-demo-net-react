@@ -33,11 +33,10 @@ public class OrderRepository : IOrderRepository
         return entities.Select(e => e.ToDomain());
     }
 
-    public async Task<int> GetCantOrdersByUserInTimeWindowAsync(UserId userId)
+    public async Task<int> GetCantOrdersByUserInTimeWindowAsync(UserId userId, DateTime since)
     {
-        var oneMinuteAgo = DateTime.UtcNow.AddMinutes(-1);
         var entities = _context.Orders
-            .Where(o => o.UserId == userId.Value && o.CreatedAt >= oneMinuteAgo);
+            .Where(o => o.UserId == userId.Value && o.CreatedAt >= since);
 
         var sql = entities.ToQueryString();
         return await entities.CountAsync();

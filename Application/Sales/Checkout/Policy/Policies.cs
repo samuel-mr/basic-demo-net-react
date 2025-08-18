@@ -6,7 +6,7 @@ namespace Application.Sales.Checkout.Policy;
 
 public class MaximumItemsPerClientValidation : IValidation<CheckoutPolicyItem>
 {
-    private const int MAX_ALLOWED_ORDERS_PER_USER = 1;
+    public const int MAX_ALLOWED_ORDERS_PER_USER = 1;
 
     public Task<MyBaseResult> IsValid(CheckoutPolicyItem item)
     {
@@ -19,7 +19,6 @@ public class MaximumItemsPerClientValidation : IValidation<CheckoutPolicyItem>
 
 public class RateLimiterForPurchaseValidation : IValidation<CheckoutPolicyItem>
 {
-    private const int MAX_ALLOWED_ORDERS_PER_USER = 1;
     private readonly IOrderRepository _orderRepository;
 
     public RateLimiterForPurchaseValidation(IOrderRepository orderRepository)
@@ -29,10 +28,11 @@ public class RateLimiterForPurchaseValidation : IValidation<CheckoutPolicyItem>
 
     public async Task<MyBaseResult> IsValid(CheckoutPolicyItem item)
     {
+        var oneMinuteAgo = DateTime.UtcNow.AddMinutes(-1);
         var orders =
-            await _orderRepository.GetCantOrdersByUserInTimeWindowAsync(item.UserId);
-        if (orders >= MAX_ALLOWED_ORDERS_PER_USER)
-            return MyBaseResult.Failure(SalesErrors.RateLimitExceeded(MAX_ALLOWED_ORDERS_PER_USER));
+            await _orderRepository.GetCantOrdersByUserInTimeWindowAsync(item.UserId, oneMinuteAgo);
+        if (orders >= 1)
+            return MyBaseResult.Failure(SalesErrors.RateLimitExceeded(1));
 
         return MyBaseResult.Success();
     }
