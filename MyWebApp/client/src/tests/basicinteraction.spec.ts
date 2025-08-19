@@ -16,6 +16,13 @@ test('Make a second purchase inmediatly', async ({ page }) => {
   await expect(page.getByText('You are allowed to but 1 per minute. Please wait.')).toBeVisible();
 });
 
+test('User another user and purchase inmediatly', async ({ page }) => {
+  await page.goto('http://localhost:3000/');
+  await page.getByRole('textbox', { name: 'Username' }).fill('Pachelbel');
+  await page.getByRole('spinbutton', { name: 'Quantity' }).fill('1');
+  await page.getByRole('button', { name: 'Submit' }).click();
+  await expect(page.getByText('Successful purchase')).toBeVisible();
+});
 // You are allowed to but 1 per minute. Please wait.
 test('Unknow user', async ({ page }) => {
   await page.goto('http://localhost:3000/');

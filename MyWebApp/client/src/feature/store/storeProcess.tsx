@@ -48,7 +48,7 @@ export function StoreProcess() {
       },
       body: JSON.stringify(data),
     })
-      .then((response) => {
+      .then(async(response) => {
         if (!response.ok) {
           return response.json().then((errorData) => {
             if (errorData?.status === 429) {
@@ -60,7 +60,11 @@ export function StoreProcess() {
             }
           });
         }
-        return response.json();
+        const text = await response.text();
+        if (!text) {
+          return null; // o return {} si prefieres un objeto vacío
+        }
+        return JSON.parse(text);
       })
       .then(() => {
         toast.success("Successful purchase", {
