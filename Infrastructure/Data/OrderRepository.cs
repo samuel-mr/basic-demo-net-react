@@ -1,3 +1,4 @@
+using System.Collections.Immutable;
 using Domain.Core.Orders.Entities;
 using Domain.Core.Orders.Repositories;
 using Domain.Core.Orders.ValueObjects;
@@ -15,22 +16,14 @@ public class OrderRepository : IOrderRepository
         _context = context;
     }
 
-    public async Task<Order?> GetByIdAsync(OrderId id)
-    {
-        var entity = await _context.Orders
-            .FirstOrDefaultAsync(o => o.Id == id.Value);
-
-        return entity?.ToDomain();
-    }
-
-    public async Task<IEnumerable<Order>> GetOrdersByUserAsync(UserId userId)
+    public async Task<IReadOnlyList<Order>> GetOrdersByUserAsync(UserId userId)
     {
         var entities = await _context.Orders
             .Where(o => o.UserId == userId.Value)
             .OrderByDescending(o => o.CreatedAt)
             .ToListAsync();
 
-        return entities.Select(e => e.ToDomain());
+        return entities.Select(e => e.ToDomain()).ToImmutableList();
     }
 
     public async Task<int> GetCantOrdersByUserInTimeWindowAsync(UserId userId, DateTime since)

@@ -5,7 +5,7 @@ namespace Domain.Core.Orders.Repositories;
 
 public interface IOrderRepository
 {
-    Task<IEnumerable<Order>> GetOrdersByUserAsync(UserId userId);
+    Task<IReadOnlyList<Order>> GetOrdersByUserAsync(UserId userId);
     Task<int> GetCantOrdersByUserInTimeWindowAsync(UserId userId, DateTime since);
     Task AddAsync(Order order);
 }
