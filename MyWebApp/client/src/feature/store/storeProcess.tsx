@@ -51,7 +51,11 @@ export function StoreProcess() {
       .then((response) => {
         if (!response.ok) {
           return response.json().then((errorData) => {
-            throw new Error(errorData.detail || errorData);
+            if(errorData?.status === 429){
+                throw new Error('You are allowed to but 1 per minute. Please wait.');
+            }else{
+                throw new Error(errorData.detail || errorData);
+            }
           });
         }
         return response.json();

@@ -26,36 +26,29 @@ public static class AuthErrors
 }
 public static class SalesErrors
 {
-    public static readonly SalesError InvalidAmount = new(
-        "SALES_001",
-        "Invalid order amount. Amount must be between 1 and 1000.",
-        ErrorCategory.Sales,
-        ErrorSeverity.Warning
-    );
-
     public static readonly SalesError InsufficientStock = new(
-        "SALES_003",
+        "SALES_001",
         "Insufficient stock available for this order.",
         ErrorCategory.Sales,
         ErrorSeverity.Warning
     );
 
     public static readonly SalesError ProductNotFound = new(
-        "SALES_004",
+        "SALES_002",
         "Product not found in inventory.",
         ErrorCategory.Sales,
         ErrorSeverity.Error
     );
 
     public static readonly SalesError OrderProcessingFailed = new(
-        "SALES_005",
+        "SALES_003",
         "Failed to process order. Please try again later."
     );
 
     public static SalesError RateLimitExceeded(int retryAfter)
     {
         return new SalesError(
-            "SALES_002",
+            "SALES_004",
             $"Rate limit of {retryAfter} per minute exceeded. Please wait before placing another order.",
             ErrorCategory.Sales,
             ErrorSeverity.Warning
@@ -65,7 +58,7 @@ public static class SalesErrors
     public static SalesError QuantityExceeded(int current, int expected)
     {
         return new SalesError(
-            "SALES_001",
+            "SALES_005",
             $"Quantity limit of {expected} was exceeded, your current quantity is {current}.",
             ErrorCategory.Sales,
             ErrorSeverity.Warning

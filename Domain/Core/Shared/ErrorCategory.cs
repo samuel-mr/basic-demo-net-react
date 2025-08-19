@@ -52,17 +52,6 @@ public sealed record GenericError : Error
     {
     }
 }
-public sealed record AuthenticationError : Error
-{
-    public AuthenticationError(
-        string code,
-        string message,
-        ErrorCategory category = ErrorCategory.Generic,
-        ErrorSeverity severity = ErrorSeverity.Error)
-        : base(code, message, category, severity)
-    {
-    }
-}
 
 public sealed record SalesError : Error
 {
