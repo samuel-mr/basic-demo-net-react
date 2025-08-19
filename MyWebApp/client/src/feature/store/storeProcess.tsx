@@ -8,7 +8,7 @@ import {
 } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
-import { toast } from "sonner";
+import toast from "react-hot-toast";
 import {
   Form,
   FormControl,
@@ -51,22 +51,26 @@ export function StoreProcess() {
       .then((response) => {
         if (!response.ok) {
           return response.json().then((errorData) => {
-            if(errorData?.status === 429){
-                throw new Error('You are allowed to but 1 per minute. Please wait.');
-            }else{
-                throw new Error(errorData.detail || errorData);
+            if (errorData?.status === 429) {
+              throw new Error(
+                "You are allowed to but 1 per minute. Please wait."
+              );
+            } else {
+              throw new Error(errorData.detail || errorData);
             }
           });
         }
         return response.json();
       })
       .then(() => {
-        toast.success('Successful purchase');
+        toast.success("Successful purchase", {
+          position: "bottom-center",
+        });
         form.reset();
       })
       .catch((error) => {
-        toast.error("Failed to create order", {
-          description: error.message,
+        toast.error(error.message, {
+          position: "bottom-center",
         });
       });
   }

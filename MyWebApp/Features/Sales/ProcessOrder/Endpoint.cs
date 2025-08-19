@@ -6,7 +6,7 @@ namespace MyWebApp.Features.Sales.ProcessOrder;
 
 public class ProcessOrderEndpoint : Endpoint<
     MyRequest,
-    Results<Ok<string>, ProblemDetails, InternalServerError<string>, StatusCodeHttpResult>>
+    Results<Ok, ProblemDetails, InternalServerError<string>, StatusCodeHttpResult>>
 {
     private readonly OrderProcessingService _orderHandler;
 
@@ -28,7 +28,7 @@ public class ProcessOrderEndpoint : Endpoint<
         });
     }
 
-    public override async Task<Results<Ok<string>, ProblemDetails, InternalServerError<string>, StatusCodeHttpResult>>
+    public override async Task<Results<Ok, ProblemDetails, InternalServerError<string>, StatusCodeHttpResult>>
         ExecuteAsync(MyRequest req, CancellationToken ct)
     {
         var result = await _orderHandler.ProcessOrderAsync(req.UserId, req.Quantity);
@@ -40,6 +40,6 @@ public class ProcessOrderEndpoint : Endpoint<
             return TypedResults.InternalServerError(result.Error.Message);
         }
 
-        return TypedResults.Ok(result.Value.CreatedOrderId.ToString());
+        return TypedResults.Ok();
     }
 }

@@ -1,17 +1,11 @@
-import { Toaster } from "sonner";
 import "./App.css";
 import { StoreProcess } from "./feature/store/storeProcess";
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   return (
     <>
-      <Toaster
-        toastOptions={{
-          classNames: {
-            description: "!text-red-900",
-          },
-        }}
-      />
+       <Toaster  />
       <StoreProcess></StoreProcess>
     </>
   );
