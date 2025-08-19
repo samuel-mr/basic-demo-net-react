@@ -28,14 +28,14 @@ public class GetPurchasedOrdersEndpoint : Endpoint<GetPurchasedOrdersRequest, Re
     public override async Task<Results<Ok<GetPurchasedOrdersResponse>, NotFound>>
         ExecuteAsync(GetPurchasedOrdersRequest req, CancellationToken ct)
     {
-        var userId = UserId.From(req.UserId);
+        var userId = UserId.From(req.userId);
         var orders = await _orderRepository.GetOrdersByUserAsync(userId);
 
         if (!orders.Any()) return TypedResults.NotFound();
 
         var response = new GetPurchasedOrdersResponse
         {
-            UserId = req.UserId,
+            UserId = req.userId,
             Orders = orders.Select(o => new OrderDto
             {
                 Id = o.Id.Value.ToString(),

@@ -3,8 +3,6 @@ import {
   Card,
   CardContent,
   CardFooter,
-  CardHeader,
-  CardTitle,
 } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@/components/ui/input";
@@ -20,6 +18,7 @@ import {
 } from "@/components/ui/form";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
+import { useNavigate } from "@tanstack/react-router";
 
 type FormValues = {
   UserId: string;
@@ -35,6 +34,8 @@ const FormSchema = z.object({
 });
 
 export function StoreProcess() {
+  const navigate = useNavigate()
+
   const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -83,12 +84,23 @@ export function StoreProcess() {
       });
   }
 
+  function handleReport(): void {
+    const user= form.getValues().UserId;
+    if(!user){
+      toast.error('Type an user', {
+          position: "bottom-center",
+        });
+      return;
+    }
+    navigate({
+      to: '/reports/$userId',
+      params: { userId: user}
+    })
+  }
+
   return (
     <>
       <Card>
-        <CardHeader>
-          <CardTitle>Bob's Corn</CardTitle>
-        </CardHeader>
         <CardContent>
           <Form {...form}>
             <form
@@ -131,7 +143,8 @@ export function StoreProcess() {
                   </FormItem>
                 )}
               />
-              <Button type="submit">Submit</Button>
+              <Button type="button" variant="secondary" className="cursor-pointer" onClick={handleReport}>Report</Button>
+              <Button type="submit" className="cursor-pointer">Buy</Button>
             </form>
           </Form>
         </CardContent>

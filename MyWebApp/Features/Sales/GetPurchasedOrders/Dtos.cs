@@ -2,7 +2,7 @@
 
 public record GetPurchasedOrdersRequest
 {
-    public string UserId { get; set; } = string.Empty;
+    public string userId { get; set; } = string.Empty;
 }
 
 public class GetPurchasedOrdersResponse
