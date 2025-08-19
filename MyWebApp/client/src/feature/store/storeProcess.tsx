@@ -21,17 +21,21 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 
+type FormValues = {
+  UserId: string;
+  Quantity: number;
+};
 const FormSchema = z.object({
   UserId: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
-  Quantity: z.coerce.number().min(1, {
+  Quantity: z.number().min(1, {
     message: "Quantity must be at least 1.",
   }),
 });
 
 export function StoreProcess() {
-  const form = useForm<z.infer<typeof FormSchema>>({
+  const form = useForm<FormValues>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       UserId: "",
@@ -39,7 +43,7 @@ export function StoreProcess() {
     },
   });
 
-  function onSubmit(data: z.infer<typeof FormSchema>) {
+  function onSubmit(data: FormValues) {
     console.log("sending...");
     fetch("https://localhost:5001/api/order/create", {
       method: "POST",
